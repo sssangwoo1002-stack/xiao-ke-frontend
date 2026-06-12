@@ -34,6 +34,11 @@ export default function ChatPage() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
+  useEffect(() => {
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+    fetch(`${apiUrl}/health`).catch(() => {})
+  }, [])
+
   const sendMessage = async (content) => {
     const text = content || input
     if (!text.trim() || sending) return
