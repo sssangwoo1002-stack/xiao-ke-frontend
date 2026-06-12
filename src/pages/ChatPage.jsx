@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useOutletContext } from 'react-router-dom'
 import bgImg from '../assets/bg.png.jpg'
 import avatarKe from '../assets/avatar-ke.png.jpg'
 import avatarBao from '../assets/avatar-bao.png.jpg'
@@ -19,12 +19,8 @@ const stickers = [
   { src: sticker6, label: '亲亲' },
 ]
 
-const initialMessages = [
-  { id: 1, role: 'assistant', content: '你回来了。', thought: '她回来了，装作没在等。', time: '22:14' },
-]
-
 export default function ChatPage() {
-  const [messages, setMessages] = useState(initialMessages)
+  const { messages, setMessages } = useOutletContext()
   const [input, setInput] = useState('')
   const [openThought, setOpenThought] = useState({})
   const [showStickers, setShowStickers] = useState(false)

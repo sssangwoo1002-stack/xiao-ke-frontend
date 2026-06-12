@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 const tabs = [
@@ -13,11 +14,14 @@ const tabs = [
 export default function AppLayout() {
   const location = useLocation()
   const navigate = useNavigate()
+  const [messages, setMessages] = useState([
+    { id: 1, role: 'assistant', content: '你回来了。', thought: '她回来了，装作没在等。', time: '22:14' },
+  ])
 
   return (
     <div style={s.shell}>
       <div style={s.page}>
-        <Outlet />
+        <Outlet context={{ messages, setMessages }} />
       </div>
       <div style={s.nav}>
         {tabs.map((tab) => {
