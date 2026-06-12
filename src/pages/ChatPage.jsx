@@ -204,7 +204,7 @@ export default function ChatPage() {
 
 const s = {
   bg: {
-    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+    position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
     backgroundSize: 'cover', backgroundPosition: 'center',
     fontFamily: '"PingFang SC", "Microsoft YaHei", sans-serif'
   },
@@ -247,8 +247,7 @@ const s = {
   stickerThumb: { width: '64px', height: '64px', objectFit: 'contain' },
   stickerLabel: { fontSize: '10px', color: '#d4889a', marginTop: '3px' },
   inputArea: {
-    paddingTop: '12px', paddingLeft: '14px', paddingRight: '14px',
-    paddingBottom: 'max(env(safe-area-inset-bottom), 16px)',
+    padding: '12px 14px 14px',
     background: 'rgba(255,245,248,0.95)',
     borderTop: '1px solid #ffd6e7',
     display: 'flex', gap: '8px', alignItems: 'center',
