@@ -97,6 +97,7 @@ export default function OurHomePage() {
           { emoji: '📊', label: '关于宝宝', path: '/stats' },
           { emoji: '💌', label: '小克的信', path: '/letters' },
           { emoji: '📸', label: '我们的故事', path: '/story' },
+          { emoji: '⚙️', label: '设置', path: '/settings' },
         ].map(item => (
           <div key={item.path} style={s.navCard} onClick={() => navigate(item.path)}>
             <div style={s.navEmoji}>{item.emoji}</div>

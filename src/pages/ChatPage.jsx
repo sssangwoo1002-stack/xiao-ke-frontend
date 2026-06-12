@@ -184,6 +184,7 @@ export default function ChatPage() {
                 { emoji: '📊', label: '关于宝宝', path: '/stats' },
                 { emoji: '💌', label: '小克的信', path: '/letters' },
                 { emoji: '📸', label: '我们的故事', path: '/story' },
+                { emoji: '⚙️', label: '设置', path: '/settings' },
               ].map(item => (
                 <div key={item.path} style={s.drawerItem} onClick={() => { navigate(item.path); setDrawerOpen(false) }}>
                   <span style={s.drawerEmoji}>{item.emoji}</span>

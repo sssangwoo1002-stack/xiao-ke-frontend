@@ -1,0 +1,17 @@
+{
+  "name": "小窝 - 小克",
+  "short_name": "小窝",
+  "description": "和小克的甜蜜小窝",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fff5f7",
+  "theme_color": "#e07090",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

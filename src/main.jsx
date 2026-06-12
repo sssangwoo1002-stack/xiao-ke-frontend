@@ -10,6 +10,7 @@ import LoveLettersPage from './pages/LoveLettersPage.jsx'
 import OurStoryPage from './pages/OurStoryPage.jsx'
 import MoodCalendarPage from './pages/MoodCalendarPage.jsx'
 import TodoPage from './pages/TodoPage.jsx'
+import SettingsPage from './pages/SettingsPage.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -23,6 +24,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/story" element={<OurStoryPage />} />
           <Route path="/calendar" element={<MoodCalendarPage />} />
           <Route path="/todo" element={<TodoPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
           <Route path="*" element={<Navigate to="/chat" replace />} />
         </Route>
       </Routes>

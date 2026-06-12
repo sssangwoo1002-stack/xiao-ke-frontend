@@ -9,6 +9,7 @@ const tabs = [
   { path: '/stats', label: '📊', name: '关于宝宝' },
   { path: '/letters', label: '💌', name: '小克的信' },
   { path: '/story', label: '📸', name: '我们的故事' },
+  { path: '/settings', label: '⚙️', name: '设置' },
 ]
 
 export default function AppLayout() {
