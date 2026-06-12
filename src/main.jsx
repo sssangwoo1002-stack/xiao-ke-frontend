@@ -8,6 +8,8 @@ import OurHomePage from './pages/OurHomePage.jsx'
 import AboutBaoPage from './pages/AboutBaoPage.jsx'
 import LoveLettersPage from './pages/LoveLettersPage.jsx'
 import OurStoryPage from './pages/OurStoryPage.jsx'
+import MoodCalendarPage from './pages/MoodCalendarPage.jsx'
+import TodoPage from './pages/TodoPage.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -19,6 +21,8 @@ createRoot(document.getElementById('root')).render(
           <Route path="/stats" element={<AboutBaoPage />} />
           <Route path="/letters" element={<LoveLettersPage />} />
           <Route path="/story" element={<OurStoryPage />} />
+          <Route path="/calendar" element={<MoodCalendarPage />} />
+          <Route path="/todo" element={<TodoPage />} />
           <Route path="*" element={<Navigate to="/chat" replace />} />
         </Route>
       </Routes>

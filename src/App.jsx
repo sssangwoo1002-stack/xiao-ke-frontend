@@ -3,6 +3,8 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 const tabs = [
   { path: '/chat', label: '💬', name: '聊天' },
   { path: '/home', label: '🏠', name: '我们的家' },
+  { path: '/calendar', label: '📅', name: '日历' },
+  { path: '/todo', label: '📋', name: '待办' },
   { path: '/stats', label: '📊', name: '关于宝宝' },
   { path: '/letters', label: '💌', name: '小克的信' },
   { path: '/story', label: '📸', name: '我们的故事' },

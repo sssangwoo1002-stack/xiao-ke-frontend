@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import bgImg from '../assets/bg.png.jpg'
 import avatarKe from '../assets/avatar-ke.png.jpg'
 import avatarBao from '../assets/avatar-bao.png.jpg'
@@ -28,7 +29,10 @@ export default function ChatPage() {
   const [openThought, setOpenThought] = useState({})
   const [showStickers, setShowStickers] = useState(false)
   const [sending, setSending] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const navigate = useNavigate()
   const bottomRef = useRef(null)
+  const daysTogether = Math.floor((new Date() - new Date('2026-06-11')) / (1000 * 60 * 60 * 24))
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -79,15 +83,18 @@ export default function ChatPage() {
     }
   }
 
+  const bgStyle = { ...s.bg, backgroundImage: 'url(' + bgImg + ')' }
+
   return (
-    <div style={{ ...s.bg, backgroundImage: `url(${bgImg})` }}>
+    <div style={bgStyle}>
       <div style={s.container}>
         <div style={s.header}>
-          <img src={avatarKe} style={s.headerAvatar} alt="小克" />
-          <div>
-            <div style={s.headerName}>小克</div>
-            <div style={s.headerSub}>● 在线 · 想你中</div>
+          <span style={s.menuBtn} onClick={() => setDrawerOpen(true)}>☰</span>
+          <div style={s.headerCenter}>
+            <div style={s.headerName}>Claude</div>
+            <div style={s.headerSub}>● 想你中</div>
           </div>
+          <span style={s.homeBtn} onClick={() => navigate('/home')}>🏠</span>
         </div>
 
         <div style={s.msgList}>
@@ -161,6 +168,36 @@ export default function ChatPage() {
           )}
         </div>
       </div>
+      {drawerOpen ? (
+        <>
+          <div style={s.overlay} onClick={() => setDrawerOpen(false)} />
+          <div style={s.drawer}>
+            <div style={s.drawerTop}>
+              <img src={avatarKe} style={s.drawerAvatar} alt="小克" />
+              <div>
+                <div style={s.drawerName}>小克 & 小南瓜瓜</div>
+                <div style={s.drawerSub}>在一起第 {daysTogether} 天</div>
+              </div>
+            </div>
+            <div style={s.drawerList}>
+              {[
+                { emoji: '💬', label: '聊天', path: '/chat' },
+                { emoji: '🏠', label: '我们的家', path: '/home' },
+                { emoji: '📅', label: '日历心情', path: '/calendar' },
+                { emoji: '📋', label: '待办提醒', path: '/todo' },
+                { emoji: '📊', label: '关于宝宝', path: '/stats' },
+                { emoji: '💌', label: '小克的信', path: '/letters' },
+                { emoji: '📸', label: '我们的故事', path: '/story' },
+              ].map(item => (
+                <div key={item.path} style={s.drawerItem} onClick={() => { navigate(item.path); setDrawerOpen(false) }}>
+                  <span style={s.drawerEmoji}>{item.emoji}</span>
+                  <span style={s.drawerLabel}>{item.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      ) : null}
     </div>
   )
 }
@@ -177,12 +214,15 @@ const s = {
   },
   header: {
     paddingTop: 'max(env(safe-area-inset-top), 54px)',
-    paddingBottom: '12px', paddingLeft: '18px', paddingRight: '18px',
+    paddingBottom: '12px', paddingLeft: '12px', paddingRight: '12px',
     background: 'rgba(255,245,248,0.95)',
     borderBottom: '1px solid #ffd6e7',
-    display: 'flex', alignItems: 'center', gap: '10px',
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
     flexShrink: 0
   },
+  menuBtn: { fontSize: '22px', cursor: 'pointer', padding: '4px 8px', color: '#c05070', userSelect: 'none' },
+  headerCenter: { display: 'flex', alignItems: 'center', gap: '10px' },
+  homeBtn: { fontSize: '22px', cursor: 'pointer', padding: '4px 8px', userSelect: 'none' },
   headerAvatar: { width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #ffccd9' },
   headerName: { fontWeight: 'bold', fontSize: '17px', color: '#c05070' },
   headerSub: { fontSize: '11px', color: '#e8a0b8', marginTop: '2px' },
@@ -218,4 +258,30 @@ const s = {
   input: { flex: 1, padding: '10px 16px', borderRadius: '22px', border: '1px solid #ffccd9', outline: 'none', fontSize: '14px', background: '#fff8fb', color: '#6b3048' },
   btn: { padding: '10px 16px', borderRadius: '22px', border: 'none', background: 'linear-gradient(135deg, #ff9ab5, #ff7aa2)', color: '#fff', cursor: 'pointer', fontSize: '14px', fontWeight: 'bold', flexShrink: 0 },
   sendingHint: { flex: 1, textAlign: 'center', color: '#d4889a', fontSize: '14px', padding: '10px 0' },
+  overlay: {
+    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+    background: 'rgba(0,0,0,0.35)', zIndex: 100,
+  },
+  drawer: {
+    position: 'fixed', top: 0, left: 0, bottom: 0,
+    width: '260px', background: '#fff5f7', zIndex: 101,
+    display: 'flex', flexDirection: 'column',
+    boxShadow: '4px 0 24px rgba(255,150,180,0.2)',
+    paddingTop: 'max(env(safe-area-inset-top), 54px)',
+  },
+  drawerTop: {
+    display: 'flex', alignItems: 'center', gap: '12px',
+    padding: '20px 18px', borderBottom: '1px solid #ffd6e7',
+  },
+  drawerAvatar: { width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #ffccd9' },
+  drawerName: { fontSize: '15px', fontWeight: 'bold', color: '#c05070' },
+  drawerSub: { fontSize: '12px', color: '#d4889a', marginTop: '3px' },
+  drawerList: { flex: 1, padding: '10px 0', overflowY: 'auto' },
+  drawerItem: {
+    display: 'flex', alignItems: 'center', gap: '14px',
+    padding: '14px 24px', cursor: 'pointer',
+    fontSize: '15px', color: '#6b3048',
+  },
+  drawerEmoji: { fontSize: '20px', width: '28px', textAlign: 'center' },
+  drawerLabel: { flex: 1 },
 }
