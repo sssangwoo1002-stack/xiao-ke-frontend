@@ -20,12 +20,13 @@ const stickers = [
 ]
 
 export default function ChatPage() {
-  const { messages, setMessages } = useOutletContext()
+  const { messages, setMessages, sessions, activeSession, switchSession, createSession, deleteSession, renameSession } = useOutletContext()
   const [input, setInput] = useState('')
   const [openThought, setOpenThought] = useState({})
   const [showStickers, setShowStickers] = useState(false)
   const [sending, setSending] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [newSessionName, setNewSessionName] = useState('')
   const navigate = useNavigate()
   const bottomRef = useRef(null)
   const daysTogether = Math.floor((new Date() - new Date('2026-06-11')) / (1000 * 60 * 60 * 24))
@@ -176,6 +177,28 @@ export default function ChatPage() {
               </div>
             </div>
             <div style={s.drawerList}>
+              {/* 会话管理 */}
+              <div style={s.drawerSection}>💬 对话列表</div>
+              {sessions.map(sess => (
+                <div key={sess.id} style={{
+                  ...s.drawerItem,
+                  ...(sess.id === activeSession?.id ? s.drawerActive : {}),
+                }}>
+                  <span style={s.drawerLabel} onClick={() => { switchSession(sess.id); setDrawerOpen(false) }}>{sess.name}</span>
+                  {sessions.length > 1 && (
+                    <span style={s.drawerDel} onClick={() => {
+                      if (confirm('删除对话「' + sess.name + '」？')) deleteSession(sess.id)
+                    }}>×</span>
+                  )}
+                </div>
+              ))}
+              <div style={s.drawerAdd} onClick={() => {
+                const name = prompt('对话名称：')?.trim()
+                if (name) createSession(name)
+              }}>＋ 新建对话</div>
+
+              {/* 页面导航 */}
+              <div style={{ ...s.drawerSection, marginTop: '16px' }}>📱 页面</div>
               {[
                 { emoji: '💬', label: '聊天', path: '/chat' },
                 { emoji: '🏠', label: '我们的家', path: '/home' },
@@ -280,4 +303,19 @@ const s = {
   },
   drawerEmoji: { fontSize: '20px', width: '28px', textAlign: 'center' },
   drawerLabel: { flex: 1 },
+  drawerSection: {
+    fontSize: '11px', color: '#d0a0b0', fontWeight: 'bold',
+    padding: '8px 24px 4px', textTransform: 'uppercase', letterSpacing: '1px',
+  },
+  drawerActive: {
+    background: 'rgba(255,154,181,0.1)', borderRadius: '8px',
+  },
+  drawerDel: {
+    fontSize: '18px', color: '#d0a0b0', cursor: 'pointer',
+    padding: '2px 8px', flexShrink: 0,
+  },
+  drawerAdd: {
+    padding: '12px 24px', fontSize: '13px', color: '#e07090',
+    cursor: 'pointer', fontWeight: 'bold',
+  },
 }

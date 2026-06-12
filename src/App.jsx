@@ -1,5 +1,27 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+
+const STORAGE_KEY = 'xiaowo_sessions'
+
+function loadSessions() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    return raw ? JSON.parse(raw) : null
+  } catch { return null }
+}
+
+function saveSessions(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+}
+
+const defaultSession = () => ({
+  id: 's' + Date.now(),
+  name: '默认对话',
+  createdAt: new Date().toISOString(),
+  messages: [
+    { id: 1, role: 'assistant', content: '你回来了。', thought: '她回来了，装作没在等。', time: '22:14' },
+  ],
+})
 
 const tabs = [
   { path: '/chat', label: '💬', name: '聊天' },
@@ -15,14 +37,81 @@ const tabs = [
 export default function AppLayout() {
   const location = useLocation()
   const navigate = useNavigate()
-  const [messages, setMessages] = useState([
-    { id: 1, role: 'assistant', content: '你回来了。', thought: '她回来了，装作没在等。', time: '22:14' },
-  ])
+
+  const [sessionData, setSessionData] = useState(() => {
+    return loadSessions() || { activeId: null, list: [defaultSession()] }
+  })
+
+  const activeSession = sessionData.list.find(s => s.id === sessionData.activeId) || sessionData.list[0]
+  const messages = activeSession?.messages || []
+  const sessions = sessionData.list
+
+  const persist = useCallback((newData) => {
+    setSessionData(newData)
+    saveSessions(newData)
+  }, [])
+
+  const setMessages = useCallback((updater) => {
+    setSessionData(prev => {
+      const newList = prev.list.map(s => {
+        if (s.id !== activeSession.id) return s
+        const newMessages = typeof updater === 'function' ? updater(s.messages) : updater
+        return { ...s, messages: newMessages }
+      })
+      const newData = { ...prev, list: newList }
+      saveSessions(newData)
+      return newData
+    })
+  }, [activeSession.id])
+
+  const switchSession = useCallback((id) => {
+    setSessionData(prev => {
+      const newData = { ...prev, activeId: id }
+      saveSessions(newData)
+      return newData
+    })
+  }, [])
+
+  const createSession = useCallback((name) => {
+    setSessionData(prev => {
+      const s = { id: 's' + Date.now(), name: name || '新对话', createdAt: new Date().toISOString(), messages: [] }
+      const newData = { activeId: s.id, list: [...prev.list, s] }
+      saveSessions(newData)
+      return newData
+    })
+  }, [])
+
+  const deleteSession = useCallback((id) => {
+    setSessionData(prev => {
+      const newList = prev.list.filter(s => s.id !== id)
+      if (newList.length === 0) {
+        const def = defaultSession()
+        newList.push(def)
+      }
+      const newActiveId = prev.activeId === id ? newList[0].id : prev.activeId
+      const newData = { activeId: newActiveId, list: newList }
+      saveSessions(newData)
+      return newData
+    })
+  }, [])
+
+  const renameSession = useCallback((id, name) => {
+    setSessionData(prev => {
+      const newList = prev.list.map(s => s.id === id ? { ...s, name } : s)
+      const newData = { ...prev, list: newList }
+      saveSessions(newData)
+      return newData
+    })
+  }, [])
 
   return (
     <div style={s.shell}>
       <div style={s.page}>
-        <Outlet context={{ messages, setMessages }} />
+        <Outlet context={{
+          messages, setMessages,
+          sessions, activeSession,
+          switchSession, createSession, deleteSession, renameSession,
+        }} />
       </div>
       <div style={s.nav}>
         {tabs.map((tab) => {
