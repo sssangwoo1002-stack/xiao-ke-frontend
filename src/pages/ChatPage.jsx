@@ -163,7 +163,7 @@ export default function ChatPage() {
 const s = {
   bg: { minHeight: '100vh', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '"PingFang SC", "Microsoft YaHei", sans-serif' },
   container: { width: '100vw', height: '100vh', background: 'rgba(255,255,255,0)', display: 'flex', flexDirection: 'column', overflow: 'hidden' },
-  header: { padding: '14px 18px', background: 'rgba(255,245,248,0.95)', borderBottom: '1px solid #ffd6e7', display: 'flex', alignItems: 'center', gap: '10px' },
+  header: { padding: 'env(safe-area-inset-top, 44px) 18px 14px', background: 'rgba(255,245,248,0.95)', borderBottom: '1px solid #ffd6e7', display: 'flex', alignItems: 'center', gap: '10px' },
   headerAvatar: { width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #ffccd9' },
   headerName: { fontWeight: 'bold', fontSize: '17px', color: '#c05070' },
   headerSub: { fontSize: '11px', color: '#e8a0b8', marginTop: '2px' },
