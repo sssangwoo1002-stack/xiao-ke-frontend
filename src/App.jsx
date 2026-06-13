@@ -113,22 +113,6 @@ export default function AppLayout() {
           switchSession, createSession, deleteSession, renameSession,
         }} />
       </div>
-      <div style={s.nav}>
-        {tabs.map((tab) => {
-          const active = location.pathname === tab.path
-          return (
-            <div
-              key={tab.path}
-              style={{ ...s.tab, ...(active ? s.tabActive : {}) }}
-              onClick={() => navigate(tab.path)}
-            >
-              <div style={s.tabIcon}>{tab.label}</div>
-              <div style={s.tabName}>{tab.name}</div>
-              {active && <div style={s.dot} />}
-            </div>
-          )
-        })}
-      </div>
     </div>
   )
 }
